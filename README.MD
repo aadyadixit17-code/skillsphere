@@ -1,6 +1,6 @@
 # SkillSphere – Intelligent Hyperlocal Freelance Ecosystem 🌐
 
-> Connect clients with verified local professionals using AI-driven matching, secure milestone payments, and real-time collaboration.
+> Connect clients with verified local professionals using AI-driven matching, secure milestone payments, and real-time collaboration.SkillSphere is a full-stack MERN platform connecting clients with local freelancers through AI-powered job matching, secure milestone payments, real-time collaboration, and comprehensive admin analytics.
 
 ---
 
@@ -44,10 +44,12 @@ skillsphere/
 🛡️ Admin & Reputation Control: Weighted reviews, fraud detection, user moderation, and comprehensive revenue insights[cite: 1].
 
 ## 🛠️ Installation & Getting Started1. 
-Clone & Setup RepositoryBashgit clone [https://github.com/aadyadixit17-code/skillsphere.git](https://github.com/aadyadixit17-code/skillsphere.git)
+1. Clone & Setup RepositoryBashgit clone [https://github.com/aadyadixit17-code/skillsphere.git](https://github.com/aadyadixit17-code/skillsphere.git)
 cd skillsphere
 
-2. Configure Environment VariablesCreate a .env file inside the server/ directory and populate your database URI, JWT secret, and API keys.3. Run the ApplicationStart Backend Server:Bashcd server
+2. Configure Environment VariablesCreate a .env file inside the server/ directory and populate your database URI, JWT secret, and API keys.
+
+3. Run the ApplicationStart Backend Server:Bashcd server
 
 npm install
 npm start
