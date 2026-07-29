@@ -10,7 +10,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "@huggingface/inference": "^4.13.23",
     "bcryptjs": "^3.0.3",

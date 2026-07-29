@@ -9,7 +9,10 @@ const jobRoutes = require('./routes/jobRoutes');
 const matchRoutes = require('./routes/matchRoutes');
 const app = express();
 const path = require('path');
+import gigRoutes from './routes/gigRoutes.js';
 
+
+app.use('/api/gigs', gigRoutes);
 
 
 
