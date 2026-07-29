@@ -1,6 +1,6 @@
 # SkillSphere – Intelligent Hyperlocal Freelance Ecosystem 🌐
 
-> Connect clients with verified local professionals using AI-driven matching, secure milestone payments, and real-time collaboration.SkillSphere is a full-stack MERN platform connecting clients with local freelancers through AI-powered job matching, secure milestone payments, real-time collaboration, and comprehensive admin analytics.
+> Connect clients with verified local professionals using AI-driven matching, secure milestone payments, and real-time collaboration. SkillSphere is a full-stack MERN platform connecting clients with local freelancers through AI-powered job matching, secure milestone payments, real-time collaboration, and comprehensive admin analytics.
 
 ---
 
