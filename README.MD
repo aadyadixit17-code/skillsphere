@@ -30,19 +30,28 @@ skillsphere/
 ```    
 ## 🚀 Core Features At-A-Glance
 🔐 Multi-Role Auth: Secure role-based access control (Client, Freelancer, Admin) featuring JWT, Google OAuth, and 2FA.
-🤖 AI Job Matching: Powered by Huggingface AI for smart gig recommendations, skill similarity scoring, and trend detection.  
+
+🤖 AI Job Matching: Powered by Huggingface AI for smart gig recommendations, skill similarity scoring, and trend detection.
+
 👤 Professional Profiles: Rich portfolios, resume uploads, proficiency levels, availability calendars, and badges[cite: 1].
+
 💼 Gig Marketplace & Bidding: Budget-defined projects, milestones, structured proposals, and negotiation workflows[cite: 1].
+
 💬 Real-Time Collaboration: Instant messaging, file sharing, typing indicators, read receipts, and video via Socket.IO[cite: 1].
+
 💳 Secure Escrow Payments: Stripe/Razorpay integration supporting milestone releases, automated payouts, and refunds[cite: 1].
+
 🛡️ Admin & Reputation Control: Weighted reviews, fraud detection, user moderation, and comprehensive revenue insights[cite: 1].
 
 ## 🛠️ Installation & Getting Started1. 
 Clone & Setup RepositoryBashgit clone [https://github.com/aadyadixit17-code/skillsphere.git](https://github.com/aadyadixit17-code/skillsphere.git)
 cd skillsphere
+
 2. Configure Environment VariablesCreate a .env file inside the server/ directory and populate your database URI, JWT secret, and API keys.3. Run the ApplicationStart Backend Server:Bashcd server
+
 npm install
 npm start
 Start Frontend Client:Bashcd ../client
+
 npm install
 npm run dev
