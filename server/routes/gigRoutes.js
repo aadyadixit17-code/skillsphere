@@ -1,20 +1,16 @@
-import express from 'express';
-import { 
-  createGig, 
-  updateGigProgress, 
-  submitProposal, 
-  getMyApplications, 
-  getOpenGigs 
-} from '../controllers/gigController.js';
-import { verifyToken } from '../middleware/authMiddleware.js'; 
-import upload from '../middleware/uploadMiddleware.js'; 
-
+const express = require('express');
 const router = express.Router();
+const {
+  createGig,
+  matchFreelancersForGig,
+  getPersonalizedRecommendations,
+  getTrendingSkills,
+} = require('../controllers/matchingController');
+const { protect, authorize } = require('../middleware/authMiddleware');
 
-router.get('/', verifyToken, getOpenGigs);
-router.post('/', verifyToken, upload.array('documents', 5), createGig);
-router.patch('/:id/progress', verifyToken, updateGigProgress);
-router.post('/:id/proposals', verifyToken, submitProposal);
-router.get('/applications/me', verifyToken, getMyApplications);
+router.post('/', protect, authorize('Client', 'Admin'), createGig);
+router.get('/recommendations/me', protect, authorize('Freelancer'), getPersonalizedRecommendations);
+router.get('/trending-skills', getTrendingSkills);
+router.get('/:id/matches', protect, matchFreelancersForGig);
 
-export default router;
+module.exports = router;

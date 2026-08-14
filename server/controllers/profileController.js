@@ -1,102 +1,107 @@
 const Profile = require('../models/Profile');
+const User = require('../models/User');
 
-exports.getProfile = async (req, res) => {
+// @desc Get current freelancer profile
+// @route GET /api/profiles/me
+// @access Private
+exports.getMyProfile = async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user.id }).populate('user', 'name email');
-    if (!profile) return res.status(404).json({ message: 'Profile not found' });
+    let profile = await Profile.findOne({ user: req.user._id }).populate('user', 'name email role');
+    if (!profile) {
+      // Auto-create blank profile if missing
+      profile = await Profile.create({ user: req.user._id });
+    }
     res.json(profile);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
+// @desc Get profile by User ID (Public / Client view)
+// @route GET /api/profiles/user/:userId
+// @access Public
+exports.getProfileByUserId = async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.params.userId }).populate('user', 'name email role');
+    if (!profile) return res.status(404).json({ message: 'Profile not found' });
+    res.json(profile);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc Update Profile Details (Skills, Pricing, Experience, Availability, Certifications)
+// @route PUT /api/profiles/me
+// @access Private (Freelancer)
 exports.updateProfile = async (req, res) => {
   try {
-    const updatedData = req.body;
-    let profile = await Profile.findOne({ user: req.user.id });
+    const {
+      bio,
+      skills,
+      portfolio,
+      certifications,
+      workExperience,
+      availability,
+      hourlyRate,
+      minimumMilestoneRate
+    } = req.body;
 
+    let profile = await Profile.findOne({ user: req.user._id });
     if (!profile) {
-      profile = new Profile({ user: req.user.id, ...updatedData });
-    } else {
-      Object.assign(profile, updatedData);
+      profile = new Profile({ user: req.user._id });
     }
 
-    await profile.save();
-    res.json(profile);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    if (bio !== undefined) profile.bio = bio;
+    if (skills) profile.skills = skills;
+    if (portfolio) profile.portfolio = portfolio;
+    if (certifications) profile.certifications = certifications;
+    if (workExperience) profile.workExperience = workExperience;
+    if (availability) profile.availability = availability;
+    if (hourlyRate !== undefined) profile.hourlyRate = hourlyRate;
+    if (minimumMilestoneRate !== undefined) profile.minimumMilestoneRate = minimumMilestoneRate;
+
+    const updatedProfile = await profile.save();
+    res.json(updatedProfile);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
+// @desc Upload Resume Document
+// @route POST /api/profiles/upload-resume
+// @access Private (Freelancer)
 exports.uploadResume = async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ message: 'No file uploaded' });
-    }
+    if (!req.file) return res.status(400).json({ message: 'Please upload a file' });
 
-    const profile = await Profile.findOne({ user: req.user.id });
-    if (!profile) return res.status(404).json({ message: 'Profile not found' });
+    let profile = await Profile.findOne({ user: req.user._id });
+    if (!profile) profile = new Profile({ user: req.user._id });
 
-    profile.resumeUrl = `/uploads/${req.file.filename}`;
+    profile.resumeUrl = `/${req.file.path.replace(/\\/g, '/')}`;
     await profile.save();
 
     res.json({ message: 'Resume uploaded successfully', resumeUrl: profile.resumeUrl });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
-exports.verifyProfile = async (req, res) => {
+// @desc Update Verification Badge System (Admin function or system automatic trigger)
+// @route PUT /api/profiles/:userId/verify-badge
+// @access Private (Admin)
+exports.updateVerificationBadge = async (req, res) => {
   try {
-    const { badgeType } = req.body;
-    const profile = await Profile.findOne({ user: req.user.id });
-    
+    const { isVerifiedBadge, badgeType } = req.body;
+
+    let profile = await Profile.findOne({ user: req.params.userId });
     if (!profile) return res.status(404).json({ message: 'Profile not found' });
 
-    profile.verificationBadge = {
-      isVerified: true,
-      badgeType: badgeType || 'Standard Verified'
-    };
-
+    profile.isVerifiedBadge = isVerifiedBadge;
+    profile.badgeType = badgeType || 'Verified Pro';
     await profile.save();
-    res.json({ message: 'Profile verified successfully', verificationBadge: profile.verificationBadge });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
 
-exports.updateAvailability = async (req, res) => {
-  try {
-    const { status, calendar } = req.body;
-    const profile = await Profile.findOne({ user: req.user.id });
-
-    if (!profile) return res.status(404).json({ message: 'Profile not found' });
-
-    if (status) profile.availability.status = status;
-    if (calendar && Array.isArray(calendar)) {
-      profile.availability.calendar = calendar;
-    }
-
-    await profile.save();
-    res.json({ message: 'Availability updated successfully', availability: profile.availability });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-exports.updatePricing = async (req, res) => {
-  try {
-    const { hourlyRate, milestonePricing } = req.body;
-    const profile = await Profile.findOne({ user: req.user.id });
-
-    if (!profile) return res.status(404).json({ message: 'Profile not found' });
-
-    if (hourlyRate !== undefined) profile.pricing.hourlyRate = hourlyRate;
-    if (milestonePricing !== undefined) profile.pricing.milestonePricing = milestonePricing;
-
-    await profile.save();
-    res.json({ message: 'Pricing updated successfully', pricing: profile.pricing });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.json({ message: 'Badge status updated', profile });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

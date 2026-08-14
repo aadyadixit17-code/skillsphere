@@ -2,16 +2,16 @@ const nodemailer = require('nodemailer');
 
 const sendEmail = async (options) => {
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
+    host: process.env.EMAIL_HOST || 'smtp.mailtrap.io',
+    port: process.env.EMAIL_PORT || 2525,
     auth: {
-      user: process.env.SMTP_EMAIL,
-      pass: process.env.SMTP_PASSWORD,
+      user: process.env.EMAIL_USER || '',
+      pass: process.env.EMAIL_PASS || '',
     },
   });
 
   const message = {
-    from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
+    from: `${process.env.FROM_NAME || 'SkillSphere'} <${process.env.FROM_EMAIL || 'noreply@skillsphere.com'}>`,
     to: options.email,
     subject: options.subject,
     text: options.message,

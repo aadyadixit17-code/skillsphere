@@ -1,66 +1,58 @@
 const mongoose = require('mongoose');
 
-const ProfileSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-    unique: true
-  },
-  title: {
-    type: String,
-    required: true
-  },
-  bio: {
-    type: String,
-    maxlength: 600
-  },
+const profileSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, unique: true },
+  bio: { type: String, default: '' },
+  
+  // 1. Skills with proficiency level
   skills: [{
     name: { type: String, required: true },
-    proficiency: { type: String, enum: ['Beginner', 'Intermediate', 'Expert'], required: true }
+    proficiency: { type: String, enum: ['Beginner', 'Intermediate', 'Expert'], default: 'Intermediate' }
   }],
-  location: {
-    type: String,
-    required: true
-  },
-  portfolioProjects: [
-    {
-      title: { type: String, required: true },
-      description: { type: String },
-      projectUrl: { type: String },
-      imageUrl: { type: String }
-    }
-  ],
-  portfolioGallery: [{
-    title: { type: String },
-    imageUrl: { type: String },
-    projectUrl: { type: String }
+
+  // 2. Portfolio gallery
+  portfolio: [{
+    title: { type: String, required: true },
+    description: String,
+    projectUrl: String,
+    imageUrl: String
   }],
-  resumeUrl: { type: String },
+
+  // 3. Resume upload
+  resumeUrl: { type: String, default: '' },
+
+  // 4. Certifications
   certifications: [{
-    title: { type: String },
-    issuedBy: { type: String },
-    dateIssued: { type: Date }
+    title: String,
+    issuer: String,
+    issueDate: Date,
+    credentialUrl: String
   }],
+
+  // 5. Work experience timeline
   workExperience: [{
-    company: { type: String },
-    role: { type: String },
-    from: { type: Date },
-    to: { type: Date },
-    description: { type: String }
+    company: String,
+    position: String,
+    startDate: Date,
+    endDate: Date,
+    isCurrent: { type: Boolean, default: false },
+    description: String
   }],
+
+  // 6. Availability calendar
   availability: {
-    status: { type: String, enum: ['Available', 'Busy', 'Not Available'], default: 'Available' },
-    calendar: [{ date: Date, available: Boolean }]
+    status: { type: String, enum: ['Available', 'Busy', 'On Vacation'], default: 'Available' },
+    hoursPerWeek: { type: Number, default: 40 },
+    nextAvailableDate: Date
   },
-  pricing: {
-    hourlyRate: { type: Number, default: 0 },
-    milestonePricing: { type: Boolean, default: false }
-  },
-  verificationBadge: {
-    isVerified: { type: Boolean, default: false },
-    badgeType: { type: String, default: 'Standard' }
-  }
+
+  // 7. Hourly & milestone pricing
+  hourlyRate: { type: Number, default: 0 },
+  minimumMilestoneRate: { type: Number, default: 0 },
+
+  // 8. Verification badge system
+  isVerifiedBadge: { type: Boolean, default: false },
+  badgeType: { type: String, enum: ['None', 'Verified Pro', 'Top Rated'], default: 'None' }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Profile', ProfileSchema);
+module.exports = mongoose.model('Profile', profileSchema);

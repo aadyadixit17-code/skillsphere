@@ -1,23 +1,36 @@
 const express = require('express');
 const router = express.Router();
-const { register, login } = require('../controllers/authController');
 const passport = require('passport');
-const { verifyEmail, forgotPassword, resetPassword } = require('../controllers/authController');
+const {
+  registerUser,
+  loginUser,
+  googleCallback,
+  sendVerificationEmail,
+  verifyEmail,
+  forgotPassword,
+  resetPassword,
+  setup2FA,
+  verify2FA,
+} = require('../controllers/authController');
+const { protect } = require('../middleware/authMiddleware');
 
-router.get('/verify/:token', verifyEmail);
+router.post('/register', registerUser);
+router.post('/login', loginUser);
+
+// Google OAuth
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/google/callback', passport.authenticate('google', { session: false, failureRedirect: '/' }), googleCallback);
+
+// Email Verification
+router.get('/verify-email-send', protect, sendVerificationEmail);
+router.get('/verify-email/:token', verifyEmail);
+
+// Password Reset
 router.post('/forgot-password', forgotPassword);
 router.put('/reset-password/:token', resetPassword);
 
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-router.get(
-  '/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    res.redirect('/dashboard');
-  }
-);
-
-router.post('/register', register);
-router.post('/login', login);
+// 2FA Routes
+router.get('/2fa/setup', protect, setup2FA);
+router.post('/2fa/verify', protect, verify2FA);
 
 module.exports = router;

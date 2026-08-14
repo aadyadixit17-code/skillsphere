@@ -6,9 +6,9 @@ module.exports = function (passport) {
   passport.use(
     new GoogleStrategy(
       {
-        clientID: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: '/api/auth/google/callback',
+        clientID: '436233883622-b8a32dimhneboo86riienf034jropv0m.apps.googleusercontent.com',
+        clientSecret: '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',
+        callbackURL: 'http://localhost:5000/api/auth/google/callback',
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
