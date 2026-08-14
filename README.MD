@@ -33,15 +33,15 @@ skillsphere/
 
 🤖 AI Job Matching: Powered by Huggingface AI for smart gig recommendations, skill similarity scoring, and trend detection.
 
-👤 Professional Profiles: Rich portfolios, resume uploads, proficiency levels, availability calendars, and badges[cite: 1].
+👤 Professional Profiles: Rich portfolios, resume uploads, proficiency levels, availability calendars, and badges.
 
-💼 Gig Marketplace & Bidding: Budget-defined projects, milestones, structured proposals, and negotiation workflows[cite: 1].
+💼 Gig Marketplace & Bidding: Budget-defined projects, milestones, structured proposals, and negotiation workflows.
 
-💬 Real-Time Collaboration: Instant messaging, file sharing, typing indicators, read receipts, and video via Socket.IO[cite: 1].
+💬 Real-Time Collaboration: Instant messaging, file sharing, typing indicators, read receipts, and video via Socket.IO.
 
-💳 Secure Escrow Payments: Stripe/Razorpay integration supporting milestone releases, automated payouts, and refunds[cite: 1].
+💳 Secure Escrow Payments: Stripe/Razorpay integration supporting milestone releases, automated payouts, and refunds.
 
-🛡️ Admin & Reputation Control: Weighted reviews, fraud detection, user moderation, and comprehensive revenue insights[cite: 1].
+🛡️ Admin & Reputation Control: Weighted reviews, fraud detection, user moderation, and comprehensive revenue insights.
 
 ## 🛠️ Installation & Getting Started1. 
 1. Clone & Setup RepositoryBashgit clone [https://github.com/aadyadixit17-code/skillsphere.git](https://github.com/aadyadixit17-code/skillsphere.git)
