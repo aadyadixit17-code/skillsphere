@@ -6,4 +6,4 @@ const { protect } = require('../middleware/authMiddleware');
 router.get('/', protect, getNotifications);
 router.put('/:id/read', protect, markNotificationAsRead);
 
-module.exports = router;
+export default router;

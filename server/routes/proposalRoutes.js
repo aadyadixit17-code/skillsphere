@@ -13,4 +13,4 @@ router.get('/gig/:gigId', protect, getProposalsForGig);
 router.get('/me', protect, authorize('Freelancer'), getMyProposals);
 router.put('/:id/status', protect, authorize('Client', 'Admin'), updateProposalStatus);
 
-module.exports = router;
+export default router;

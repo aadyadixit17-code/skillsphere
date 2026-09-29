@@ -19,4 +19,4 @@ router.get('/payments', protect, authorize('Admin'), monitorPayments);
 router.get('/fraud-alerts', protect, authorize('Admin'), getFraudAlerts);
 router.get('/analytics', protect, authorize('Admin'), getAdminAnalytics);
 
-module.exports = router;
+export default router;

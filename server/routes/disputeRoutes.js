@@ -11,4 +11,4 @@ router.post('/', protect, createDispute);
 router.get('/', protect, authorize('Admin'), getAllDisputes);
 router.put('/:id/resolve', protect, authorize('Admin'), resolveDispute);
 
-module.exports = router;
+export default router;

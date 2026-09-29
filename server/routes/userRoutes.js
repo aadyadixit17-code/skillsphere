@@ -5,4 +5,4 @@ const { getProfile } = require('../controllers/userController');
 
 router.get('/profile', protect, getProfile);
 
-module.exports = router;
+export default router;

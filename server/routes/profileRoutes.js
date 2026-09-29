@@ -16,4 +16,4 @@ router.put('/me', protect, authorize('Freelancer', 'Admin'), updateProfile);
 router.post('/upload-resume', protect, authorize('Freelancer', 'Admin'), upload.single('resume'), uploadResume);
 router.put('/:userId/verify-badge', protect, authorize('Admin'), updateVerificationBadge);
 
-module.exports = router;
+export default router;

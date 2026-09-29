@@ -5,4 +5,4 @@ const { searchGigs, searchFreelancers } = require('../controllers/searchControll
 router.get('/gigs', searchGigs);
 router.get('/freelancers', searchFreelancers);
 
-module.exports = router;
+export default router;

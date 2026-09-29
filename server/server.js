@@ -1,16 +1,37 @@
-require('dotenv').config();
-const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
-const cors = require('cors');
-const passport = require('passport');
-const path = require('path');
-const fs = require('fs');
-const connectDB = require('./config/db');
-const Message = require('./models/Message');
+import 'dotenv/config';
+import express from 'express';
+import http from 'http';
+import { Server } from 'socket.io';
+import cors from 'cors';
+import passport from 'passport';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import connectDB from './config/db.js';
+import Message from './models/Message.js';
 
 // Initialize passport configuration
-require('./config/passport');
+import './config/passport.js';
+
+// Routes
+import authRoutes from './routes/authRoutes.js';
+import gigRoutes from './routes/gigRoutes.js';
+import profileRoutes from './routes/profileRoutes.js';
+import proposalRoutes from './routes/proposalRoutes.js';
+import chatRoutes from './routes/chatRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
+import searchRoutes from './routes/searchRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
+import schedulerRoutes from './routes/schedulerRoutes.js';
+import disputeRoutes from './routes/disputeRoutes.js';
+import progressRoutes from './routes/progressRoutes.js';
+import freelancerAnalyticsRoutes from './routes/freelancerAnalyticsRoutes.js';
+
+// __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Connect to Database
 connectDB();
@@ -36,11 +57,20 @@ if (!fs.existsSync('./uploads')) {
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // API Routes
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/gigs', require('./routes/gigRoutes'));
-app.use('/api/profiles', require('./routes/profileRoutes'));
-app.use('/api/proposals', require('./routes/proposalRoutes'));
-app.use('/api/chats', require('./routes/chatRoutes'));
+app.use('/api/auth', authRoutes);
+app.use('/api/gigs', gigRoutes);
+app.use('/api/profiles', profileRoutes);
+app.use('/api/proposals', proposalRoutes);
+app.use('/api/chats', chatRoutes);
+app.use('/api/payments', paymentRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/search', searchRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/scheduler', schedulerRoutes);
+app.use('/api/disputes', disputeRoutes);
+app.use('/api/progress', progressRoutes);
+app.use('/api/freelancer-analytics', freelancerAnalyticsRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {
@@ -96,13 +126,4 @@ const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  app.use('/api/payments', require('./routes/paymentRoutes'));
-  app.use('/api/reviews', require('./routes/reviewRoutes'));
-  app.use('/api/admin', require('./routes/adminRoutes'));
-  app.use('/api/search', require('./routes/searchRoutes'));
-  app.use('/api/notifications', require('./routes/notificationRoutes'));
-  app.use('/api/scheduler', require('./routes/schedulerRoutes'));
-  app.use('/api/disputes', require('./routes/disputeRoutes'));
-  app.use('/api/progress', require('./routes/progressRoutes'));
-  app.use('/api/freelancer-analytics', require('./routes/freelancerAnalyticsRoutes'));
 });

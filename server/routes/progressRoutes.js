@@ -11,4 +11,4 @@ router.post('/', protect, createTracker);
 router.get('/:gigId', protect, getTrackerByGig);
 router.put('/:id', protect, authorize('Freelancer'), updateProgress);
 
-module.exports = router;
+export default router;

@@ -11,4 +11,4 @@ router.post('/slots', protect, authorize('Freelancer'), setAvailabilitySlots);
 router.get('/:freelancerId', getFreelancerAvailability);
 router.post('/book', protect, authorize('Client'), bookSlot);
 
-module.exports = router;
+export default router;

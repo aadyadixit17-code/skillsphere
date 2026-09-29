@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const progressTrackerSchema = new mongoose.Schema({
   gig: { type: mongoose.Schema.Types.ObjectId, ref: 'Gig', required: true },
@@ -17,4 +17,5 @@ const progressTrackerSchema = new mongoose.Schema({
   deadline: { type: Date, required: true }
 }, { timestamps: true });
 
-module.exports = mongoose.model('ProgressTracker', progressTrackerSchema);
+const ProgressTracker = mongoose.model('ProgressTracker', progressTrackerSchema);
+export default ProgressTracker;

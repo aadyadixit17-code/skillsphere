@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const reviewSchema = new mongoose.Schema({
   gig: { type: mongoose.Schema.Types.ObjectId, ref: 'Gig', required: true },
@@ -12,4 +12,5 @@ const reviewSchema = new mongoose.Schema({
   isFlaggedAsFake: { type: Boolean, default: false } // Fraud detection flag
 }, { timestamps: true });
 
-module.exports = mongoose.model('Review', reviewSchema);
+const Review = mongoose.model('Review', reviewSchema);
+export default Review;

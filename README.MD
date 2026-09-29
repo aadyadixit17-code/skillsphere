@@ -6,9 +6,9 @@
 
 ## 📸 Application Previews
 
-| Login Screen | Dashboard | Marketplace |
-| :---: | :---: | :---: |
-| ![Login Preview](login.png) | ![Dashboard Preview](dashboard.png) | ![Marketplace Preview](marketplace.png) |
+| Register Screen | Dashboard | Modules |
+| :---: | :---: | :---: | :---: | 
+| ![Register Preview](register.png) | ![Dashboard Preview](dashboard.png) | ![Modules Preview](modules.png) |  
 
 ---
 

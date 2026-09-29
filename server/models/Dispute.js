@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const disputeSchema = new mongoose.Schema({
   payment: { type: mongoose.Schema.Types.ObjectId, ref: 'Payment', required: true },
@@ -16,4 +16,5 @@ const disputeSchema = new mongoose.Schema({
   resolutionSummary: { type: String }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Dispute', disputeSchema);
+const Dispute = mongoose.model('Dispute', disputeSchema);
+export default Dispute;

@@ -7,3 +7,4 @@ router.get('/:userId', protect, getChatHistory);
 router.put('/read/:senderId', protect, markAsRead);
 
 module.exports = router;
+export default router;

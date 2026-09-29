@@ -5,4 +5,4 @@ const { protect } = require('../middleware/authMiddleware');
 
 router.get('/:jobId', protect, matchFreelancersForJob);
 
-module.exports = router;
+export default router;

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const gigSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -10,4 +10,5 @@ const gigSchema = new mongoose.Schema({
   status: { type: String, enum: ['Open', 'In Progress', 'Completed'], default: 'Open' },
 }, { timestamps: true });
 
-module.exports = mongoose.model('Gig', gigSchema);
+const Gig = mongoose.model('Gig', gigSchema);
+export default Gig;

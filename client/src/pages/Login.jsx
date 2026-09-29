@@ -49,7 +49,7 @@ function Login() {
         boxShadow: '0 10px 30px rgba(255, 145, 164, 0.2)',
         border: '1px solid #FFE0E6'
       }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '24px', color: '#2D2D2D', fontWeight: '600' }}>SkillSphere Sign In</h2>
+        <h2 style={{ textAlign: 'center', marginBottom: '24px', color: '#2D2D2D', fontWeight: '600' }}>FieldBook Sign In</h2>
         
         <div style={{ marginBottom: '16px' }}>
           <label style={{ display: 'block', marginBottom: '6px', fontSize: '13px', fontWeight: '500', color: '#555' }}>Email Address:</label>

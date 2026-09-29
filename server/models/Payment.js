@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const paymentSchema = new mongoose.Schema({
   client: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -14,5 +14,5 @@ const paymentSchema = new mongoose.Schema({
   },
   milestoneTitle: { type: String, default: 'Full Project Payment' }
 }, { timestamps: true });
-
-module.exports = mongoose.model('Payment', paymentSchema);
+    const Payment = mongoose.model('Payment', paymentSchema);
+    export default Payment;

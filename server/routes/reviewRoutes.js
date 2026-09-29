@@ -6,4 +6,4 @@ const { protect, authorize } = require('../middleware/authMiddleware');
 router.post('/', protect, authorize('Client'), createReview);
 router.get('/analytics/:userId', getReviewAnalytics);
 
-module.exports = router;
+export default router;

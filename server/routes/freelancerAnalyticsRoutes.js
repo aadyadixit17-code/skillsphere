@@ -5,4 +5,4 @@ const { protect, authorize } = require('../middleware/authMiddleware');
 
 router.get('/', protect, authorize('Freelancer'), getFreelancerAnalytics);
 
-module.exports = router;
+export default router;

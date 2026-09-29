@@ -1,18 +1,22 @@
-const express = require('express');
+import express from 'express';
+
+import passport from 'passport';
+
 const router = express.Router();
-const passport = require('passport');
-const {
-  registerUser,
-  loginUser,
-  googleCallback,
-  sendVerificationEmail,
-  verifyEmail,
-  forgotPassword,
-  resetPassword,
-  setup2FA,
-  verify2FA,
-} = require('../controllers/authController');
-const { protect } = require('../middleware/authMiddleware');
+import { 
+  registerUser, 
+  loginUser, 
+  googleCallback, 
+  sendVerificationEmail, 
+  verifyEmail, 
+  forgotPassword, 
+  resetPassword, 
+  setup2FA, 
+  verify2FA 
+} from '../controllers/authController.js';
+import { protect } from '../middleware/authMiddleware.js';
+
+
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
@@ -33,4 +37,4 @@ router.put('/reset-password/:token', resetPassword);
 router.get('/2fa/setup', protect, setup2FA);
 router.post('/2fa/verify', protect, verify2FA);
 
-module.exports = router;
+export default router;

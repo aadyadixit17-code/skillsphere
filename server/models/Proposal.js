@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const proposalSchema = new mongoose.Schema({
   gig: { type: mongoose.Schema.Types.ObjectId, ref: 'Gig', required: true },
@@ -17,4 +17,5 @@ const proposalSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Proposal', proposalSchema);
+const Proposal = mongoose.model('Proposal', proposalSchema);
+export default Proposal;

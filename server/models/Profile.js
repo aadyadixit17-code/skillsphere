@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const profileSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, unique: true },
@@ -55,4 +55,5 @@ const profileSchema = new mongoose.Schema({
   badgeType: { type: String, enum: ['None', 'Verified Pro', 'Top Rated'], default: 'None' }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Profile', profileSchema);
+const Profile = mongoose.model('Profile', profileSchema);
+export default Profile;

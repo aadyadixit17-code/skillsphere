@@ -13,4 +13,4 @@ router.put('/release/:id', protect, authorize('Client', 'Admin'), releaseEscrow)
 router.post('/refund/:id', protect, authorize('Client', 'Admin'), refundPayment);
 router.get('/history', protect, getTransactionHistory);
 
-module.exports = router;
+export default router;

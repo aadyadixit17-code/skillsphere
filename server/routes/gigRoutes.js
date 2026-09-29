@@ -13,4 +13,4 @@ router.get('/recommendations/me', protect, authorize('Freelancer'), getPersonali
 router.get('/trending-skills', getTrendingSkills);
 router.get('/:id/matches', protect, matchFreelancersForGig);
 
-module.exports = router;
+export default router;
