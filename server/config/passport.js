@@ -6,9 +6,7 @@ export default function (passport) {
   passport.use(
     new GoogleStrategy(
       {
-        clientID: '436233883622-b8a32dimhneboo86riienf034jropv0m.apps.googleusercontent.com',
-        clientSecret: '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',
-        callbackURL: 'http://localhost:5000/api/auth/google/callback',
+        
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
