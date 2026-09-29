@@ -7,7 +7,7 @@
 ## 📸 Application Previews
 
 | Register Screen | Dashboard | Modules |
-| :---: | :---: | :---: | :---: | 
+| :---: | :---: | :---: |  
 | ![Register Preview](register.png) | ![Dashboard Preview](dashboard.png) | ![Modules Preview](modules.png) |  
 
 ---
