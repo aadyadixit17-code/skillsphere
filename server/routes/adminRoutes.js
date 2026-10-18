@@ -1,15 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {
-  getAllUsers,
-  toggleUserSuspension,
-  verifyFreelancer,
-  approveGig,
-  monitorPayments,
-  getFraudAlerts,
-  getAdminAnalytics
-} = require('../controllers/adminController');
-const { protect, authorize } = require('../middleware/authMiddleware');
+import { getAllUsers, toggleUserSuspension, verifyFreelancer, approveGig, monitorPayments, getFraudAlerts, getAdminAnalytics } from '../controllers/adminController.js';
+import { protect, authorize } from '../middleware/authMiddleware.js';
 
 router.get('/users', protect, authorize('Admin'), getAllUsers);
 router.put('/users/:id/suspend', protect, authorize('Admin'), toggleUserSuspension);

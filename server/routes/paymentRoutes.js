@@ -1,12 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {
-  createPaymentIntent,
-  releaseEscrow,
-  refundPayment,
-  getTransactionHistory
-} = require('../controllers/paymentController');
-const { protect, authorize } = require('../middleware/authMiddleware');
+import { createPaymentIntent, releaseEscrow, refundPayment, getTransactionHistory } from '../controllers/paymentController.js';
+import { protect, authorize } from '../middleware/authMiddleware.js';
 
 router.post('/create-intent', protect, authorize('Client'), createPaymentIntent);
 router.put('/release/:id', protect, authorize('Client', 'Admin'), releaseEscrow);

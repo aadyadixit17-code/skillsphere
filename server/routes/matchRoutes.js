@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { matchFreelancersForJob } = require('../controllers/matchingController');
-const { protect } = require('../middleware/authMiddleware');
+import { matchFreelancersForJob } from '../controllers/matchingController.js';
+import { protect } from '../middleware/authMiddleware.js';
 
 router.get('/:jobId', protect, matchFreelancersForJob);
 

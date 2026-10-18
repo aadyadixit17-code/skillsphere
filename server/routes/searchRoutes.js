@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { searchGigs, searchFreelancers } = require('../controllers/searchController');
+import { searchGigs, searchFreelancers } from '../controllers/searchController.js';
 
 router.get('/gigs', searchGigs);
 router.get('/freelancers', searchFreelancers);

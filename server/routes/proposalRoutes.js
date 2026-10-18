@@ -1,12 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {
-  submitProposal,
-  getProposalsForGig,
-  getMyProposals,
-  updateProposalStatus
-} = require('../controllers/proposalController');
-const { protect, authorize } = require('../middleware/authMiddleware');
+import { submitProposal, getProposalsForGig, getMyProposals, updateProposalStatus } from '../controllers/proposalController.js';
+import { protect, authorize } from '../middleware/authMiddleware.js';
 
 router.post('/:gigId', protect, authorize('Freelancer'), submitProposal);
 router.get('/gig/:gigId', protect, getProposalsForGig);

@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { createReview, getReviewAnalytics } = require('../controllers/reviewController');
-const { protect, authorize } = require('../middleware/authMiddleware');
+import { createReview, getReviewAnalytics } from '../controllers/reviewController.js';
+import { protect, authorize } from '../middleware/authMiddleware.js';
 
 router.post('/', protect, authorize('Client'), createReview);
 router.get('/analytics/:userId', getReviewAnalytics);

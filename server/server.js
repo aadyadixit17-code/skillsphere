@@ -72,7 +72,14 @@ app.use('/api/disputes', disputeRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/freelancer-analytics', freelancerAnalyticsRoutes);
 
-// Root endpoint
+// Serve frontend in production
+if (process.env.NODE_ENV === 'production') {
+  const buildPath = path.join(__dirname, '../client/build'); // Use 'dist' instead of 'build' if using Vite
+  app.use(express.static(buildPath));
+  app.use((req, res) => res.sendFile(path.join(buildPath, 'index.html')));
+}
+
+// Root endpoint (only active in development or if production block doesn't override)
 app.get('/', (req, res) => {
   res.send('SkillSphere API is running...');
 });

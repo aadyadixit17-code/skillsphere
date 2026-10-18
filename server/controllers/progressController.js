@@ -1,9 +1,9 @@
-const ProgressTracker = require('../models/ProgressTracker');
+import ProgressTracker from '../models/ProgressTracker.js';
 
 // @desc Initialize progress tracker for a gig
 // @route POST /api/progress
 // @access Private (Client / Freelancer)
-exports.createTracker = async (req, res) => {
+export const createTracker = async (req, res) => {
   try {
     const { gigId, freelancerId, clientId, deadline } = req.body;
 
@@ -29,7 +29,7 @@ exports.createTracker = async (req, res) => {
 // @desc Get progress tracker details for a gig
 // @route GET /api/progress/:gigId
 // @access Private
-exports.getTrackerByGig = async (req, res) => {
+export const getTrackerByGig = async (req, res) => {
   try {
     const tracker = await ProgressTracker.findOne({ gig: req.params.gigId }).populate('gig freelancer client');
     if (!tracker) return res.status(404).json({ message: 'Progress tracker not found' });
@@ -42,7 +42,7 @@ exports.getTrackerByGig = async (req, res) => {
 // @desc Update task completion percentage, add file upload, or add progress log
 // @route PUT /api/progress/:id
 // @access Private (Freelancer)
-exports.updateProgress = async (req, res) => {
+export const updateProgress = async (req, res) => {
   try {
     const { completionPercentage, fileUpload, progressLog } = req.body;
 

@@ -20,22 +20,23 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'Please add all fields' });
     }
 
+    const normalizedEmail = email.toLowerCase().trim();
+
     // Check if user exists
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ email: normalizedEmail });
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    // Only allow safe roles from the public form; prevent creating Admin directly via public form
+    const safeRole = ['Client', 'Freelancer'].includes(role) ? role : 'Freelancer';
 
-    // Create user
+    // Create user (pass plain password; the model's pre('save') hook handles hashing)
     const user = await User.create({
       name,
-      email,
-      password: hashedPassword,
-      role: role || 'Freelancer', // Default role handler
+      email: normalizedEmail,
+      password,
+      role: safeRole,
     });
 
     if (user) {
@@ -61,10 +62,10 @@ export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check for user email
-    const user = await User.findOne({ email });
+    // Check for user email with normalization
+    const user = await User.findOne({ email: (email || '').toLowerCase().trim() });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (user && (await user.matchPassword(password))) {
       res.json({
         _id: user.id,
         name: user.name,
@@ -85,10 +86,9 @@ export const loginUser = async (req, res) => {
 // @access  Public
 export const googleCallback = async (req, res) => {
   try {
-    // Generate token for user authenticated via passport Google strategy
     const token = generateToken(req.user._id);
-    // Redirect or respond with token/user data as needed by your frontend
-    res.redirect(`http://localhost:5173/dashboard?token=${token}`);
+    const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+    res.redirect(`${clientUrl}/dashboard?token=${token}`);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

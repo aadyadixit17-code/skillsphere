@@ -1,10 +1,10 @@
-const Profile = require('../models/Profile');
-const User = require('../models/User');
+import Profile from '../models/Profile.js';
+import User from '../models/User.js';
 
 // @desc Get current freelancer profile
 // @route GET /api/profiles/me
 // @access Private
-exports.getMyProfile = async (req, res) => {
+export const getMyProfile = async (req, res) => {
   try {
     let profile = await Profile.findOne({ user: req.user._id }).populate('user', 'name email role');
     if (!profile) {
@@ -20,7 +20,7 @@ exports.getMyProfile = async (req, res) => {
 // @desc Get profile by User ID (Public / Client view)
 // @route GET /api/profiles/user/:userId
 // @access Public
-exports.getProfileByUserId = async (req, res) => {
+export const getProfileByUserId = async (req, res) => {
   try {
     const profile = await Profile.findOne({ user: req.params.userId }).populate('user', 'name email role');
     if (!profile) return res.status(404).json({ message: 'Profile not found' });
@@ -33,7 +33,7 @@ exports.getProfileByUserId = async (req, res) => {
 // @desc Update Profile Details (Skills, Pricing, Experience, Availability, Certifications)
 // @route PUT /api/profiles/me
 // @access Private (Freelancer)
-exports.updateProfile = async (req, res) => {
+export const updateProfile = async (req, res) => {
   try {
     const {
       bio,
@@ -70,7 +70,7 @@ exports.updateProfile = async (req, res) => {
 // @desc Upload Resume Document
 // @route POST /api/profiles/upload-resume
 // @access Private (Freelancer)
-exports.uploadResume = async (req, res) => {
+export const uploadResume = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'Please upload a file' });
 
@@ -89,7 +89,7 @@ exports.uploadResume = async (req, res) => {
 // @desc Update Verification Badge System (Admin function or system automatic trigger)
 // @route PUT /api/profiles/:userId/verify-badge
 // @access Private (Admin)
-exports.updateVerificationBadge = async (req, res) => {
+export const updateVerificationBadge = async (req, res) => {
   try {
     const { isVerifiedBadge, badgeType } = req.body;
 

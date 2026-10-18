@@ -1,9 +1,9 @@
-const Message = require('../models/Message');
+import Message from '../models/Message.js';
 
 // @desc Get chat history between logged-in user and another user
 // @route GET /api/chats/:userId
 // @access Private
-exports.getChatHistory = async (req, res) => {
+export const getChatHistory = async (req, res) => {
   try {
     const user1 = req.user._id;
     const user2 = req.params.userId;
@@ -24,7 +24,7 @@ exports.getChatHistory = async (req, res) => {
 // @desc Mark messages as read
 // @route PUT /api/chats/read/:senderId
 // @access Private
-exports.markAsRead = async (req, res) => {
+export const markAsRead = async (req, res) => {
   try {
     await Message.updateMany(
       { sender: req.params.senderId, recipient: req.user._id, isRead: false },

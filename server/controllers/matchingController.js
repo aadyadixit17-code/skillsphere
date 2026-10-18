@@ -1,8 +1,8 @@
-const Gig = require('../models/Gig');
-const User = require('../models/User');
-const axios = require('axios');
+import axios from 'axios';
+import Gig from '../models/Gig.js';
+import User from '../models/User.js';
 
-// Helper to compute text similarity using Hugging Face free feature-extraction API
+// Helper to compute text similarity using Hugging Face feature-extraction API
 async function getHuggingFaceSimilarity(text1, text2) {
   try {
     const response = await axios.post(
@@ -15,7 +15,7 @@ async function getHuggingFaceSimilarity(text1, text2) {
     // Fallback basic matching if token or API is bypassed
     const set1 = new Set(text1.toLowerCase().split(' '));
     const set2 = new Set(text2.toLowerCase().split(' '));
-    let intersection = [...set1].filter(x => set2.has(x)).length;
+    const intersection = [...set1].filter((x) => set2.has(x)).length;
     return intersection / Math.max(set1.size, set2.size, 1);
   }
 }
@@ -23,7 +23,7 @@ async function getHuggingFaceSimilarity(text1, text2) {
 // @desc Post a new gig
 // @route POST /api/gigs
 // @access Private (Client Only)
-exports.createGig = async (req, res) => {
+export const createGig = async (req, res) => {
   try {
     const { title, description, skillsRequired, budget, location } = req.body;
     const gig = await Gig.create({
@@ -43,7 +43,7 @@ exports.createGig = async (req, res) => {
 // @desc Get AI-powered matched freelancers for a gig
 // @route GET /api/gigs/:id/matches
 // @access Private
-exports.matchFreelancersForGig = async (req, res) => {
+export const matchFreelancersForGig = async (req, res) => {
   try {
     const gig = await Gig.findById(req.params.id);
     if (!gig) return res.status(404).json({ message: 'Gig not found' });
@@ -52,10 +52,11 @@ exports.matchFreelancersForGig = async (req, res) => {
 
     const scoredFreelancers = await Promise.all(
       freelancers.map(async (freelancer) => {
-        // Evaluate skill similarity using description/skills
-        const freelancerProfileText = freelancer.skills ? freelancer.skills.join(' ') : 'developer javascript react node';
+        const freelancerProfileText = freelancer.skills
+          ? freelancer.skills.join(' ')
+          : 'developer javascript react node';
         const gigText = gig.skillsRequired.join(' ') + ' ' + gig.description;
-        
+
         const score = await getHuggingFaceSimilarity(gigText, freelancerProfileText);
 
         return {
@@ -67,14 +68,17 @@ exports.matchFreelancersForGig = async (req, res) => {
       })
     );
 
-    // Sort by highest match score
     scoredFreelancers.sort((a, b) => b.matchScore - a.matchScore);
     res.json(scoredFreelancers);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-exports.getPersonalizedRecommendations = async (req, res) => {
+
+// @desc Personalized gig recommendations for a freelancer
+// @route GET /api/gigs/recommendations/me
+// @access Private (Freelancer)
+export const getPersonalizedRecommendations = async (req, res) => {
   try {
     const freelancer = await User.findById(req.user._id);
     const freelancerSkills = freelancer.skills || ['javascript', 'react', 'node'];
@@ -82,11 +86,12 @@ exports.getPersonalizedRecommendations = async (req, res) => {
     const gigs = await Gig.find({ status: 'Open' });
 
     const recommendedGigs = gigs.map((gig) => {
-      // Calculate matching score based on overlapping skills
       const matchingSkills = gig.skillsRequired.filter((skill) =>
-        freelancerSkills.map(s => s.toLowerCase()).includes(skill.toLowerCase())
+        freelancerSkills.map((s) => s.toLowerCase()).includes(skill.toLowerCase())
       );
-      const score = Math.round((matchingSkills.length / Math.max(gig.skillsRequired.length, 1)) * 100);
+      const score = Math.round(
+        (matchingSkills.length / Math.max(gig.skillsRequired.length, 1)) * 100
+      );
 
       return {
         _id: gig._id,
@@ -98,7 +103,6 @@ exports.getPersonalizedRecommendations = async (req, res) => {
       };
     });
 
-    // Sort by highest match score
     recommendedGigs.sort((a, b) => b.matchScore - a.matchScore);
     res.json(recommendedGigs);
   } catch (error) {
@@ -106,10 +110,10 @@ exports.getPersonalizedRecommendations = async (req, res) => {
   }
 };
 
-// @desc Detect trending skills across all open gigs
+// @desc Detect trending skills across all gigs
 // @route GET /api/gigs/trending-skills
-// @access Public / Private
-exports.getTrendingSkills = async (req, res) => {
+// @access Public
+export const getTrendingSkills = async (req, res) => {
   try {
     const gigs = await Gig.find({});
     const skillCounts = {};
@@ -121,30 +125,12 @@ exports.getTrendingSkills = async (req, res) => {
       });
     });
 
-    // Sort skills by frequency
     const sortedSkills = Object.keys(skillCounts)
       .map((skill) => ({ skill, count: skillCounts[skill] }))
       .sort((a, b) => b.count - a.count);
 
-    res.json(sortedSkills.slice(0, 10)); // Top 10 trending skills
+    res.json(sortedSkills.slice(0, 10));
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
-const express = require('express');
-const router = express.Router();
-const {
-  createGig,
-  matchFreelancersForGig,
-  getPersonalizedRecommendations,
-  getTrendingSkills,
-} = require('../controllers/matchingController');
-const { protect, authorize } = require('../middleware/authMiddleware');
-
-router.post('/', protect, authorize('Client', 'Admin'), createGig);
-router.get('/recommendations/me', protect, authorize('Freelancer'), getPersonalizedRecommendations);
-router.get('/trending-skills', getTrendingSkills);
-router.get('/:id/matches', protect, matchFreelancersForGig);
-
-module.exports = router;

@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const Job = require('../models/Job');
-const { protect } = require('../middleware/authMiddleware');
+import Job from '../models/Job.js';
+import { protect } from '../middleware/authMiddleware.js';
 
 router.post('/', protect, async (req, res) => {
     try {

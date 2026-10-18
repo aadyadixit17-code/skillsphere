@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useDispatch } from 'react-redux';
+import { logout } from './redux/slices/authSlice';
 function Dashboard() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState('Dashboard');
   const [selectedModule, setSelectedModule] = useState(null);
 
   const user = JSON.parse(localStorage.getItem('user')) || { name: 'Professional', role: 'Developer Account' };
 
-  const onLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    navigate('/');
-  };
+  const onLogout = async () => {
+  await dispatch(logout());              // clears Redux state and localStorage 'user'
+  localStorage.removeItem('token');
+  navigate('/login', { replace: true });
+};
 
   const handleModuleClick = (modTitle) => {
     setSelectedModule(modTitle);

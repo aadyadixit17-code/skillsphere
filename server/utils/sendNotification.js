@@ -1,5 +1,5 @@
-const Notification = require('../models/Notification');
-const sendEmail = require('./sendEmail'); // Uses your existing email utility from Module 1
+import Notification from '../models/Notification.js';
+import sendEmail from './sendEmail.js'; // Uses your existing email utility from Module 1
 
 const triggerNotification = async ({ io, recipientId, recipientEmail, title, message, type }) => {
   try {
@@ -31,4 +31,4 @@ const triggerNotification = async ({ io, recipientId, recipientEmail, title, mes
   }
 };
 
-module.exports = triggerNotification;
+export default triggerNotification;

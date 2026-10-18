@@ -1,10 +1,10 @@
-const Dispute = require('../models/Dispute');
-const Payment = require('../models/Payment');
+import Dispute from '../models/Dispute.js';
+import Payment from '../models/Payment.js';
 
 // @desc Raise a dispute request with evidence
 // @route POST /api/disputes
 // @access Private (Client or Freelancer)
-exports.createDispute = async (req, res) => {
+export const createDispute = async (req, res) => {
   try {
     const { paymentId, gigId, againstId, reason, evidenceUrls } = req.body;
 
@@ -30,7 +30,7 @@ exports.createDispute = async (req, res) => {
 // @desc Get all disputes (Admin mediation view)
 // @route GET /api/disputes
 // @access Private (Admin Only)
-exports.getAllDisputes = async (req, res) => {
+export const getAllDisputes = async (req, res) => {
   try {
     const disputes = await Dispute.find({}).populate('raisedBy against gig payment');
     res.json(disputes);
@@ -42,7 +42,7 @@ exports.getAllDisputes = async (req, res) => {
 // @desc Resolve dispute and update transaction status (Refund or Release)
 // @route PUT /api/disputes/:id/resolve
 // @access Private (Admin Only)
-exports.resolveDispute = async (req, res) => {
+export const resolveDispute = async (req, res) => {
   try {
     const { resolutionType, adminNotes, resolutionSummary } = req.body; 
     // resolutionType: 'Refund' or 'Release'

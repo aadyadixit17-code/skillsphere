@@ -1,12 +1,13 @@
-const express = require('express');
-const router = express.Router();
-const {
-  createGig,
+import express from 'express';
+import { createGig } from '../controllers/gigController.js';
+import {
   matchFreelancersForGig,
   getPersonalizedRecommendations,
   getTrendingSkills,
-} = require('../controllers/matchingController');
-const { protect, authorize } = require('../middleware/authMiddleware');
+} from '../controllers/matchingController.js';
+import { protect, authorize } from '../middleware/authMiddleware.js';
+
+const router = express.Router();
 
 router.post('/', protect, authorize('Client', 'Admin'), createGig);
 router.get('/recommendations/me', protect, authorize('Freelancer'), getPersonalizedRecommendations);

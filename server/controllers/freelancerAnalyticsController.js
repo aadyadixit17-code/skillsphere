@@ -1,12 +1,12 @@
-const Proposal = require('../models/Proposal');
-const Payment = require('../models/Payment');
-const Review = require('../models/Review');
-const Profile = require('../models/Profile');
+import Proposal from '../models/Proposal.js';
+import Payment from '../models/Payment.js';
+import Review from '../models/Review.js';
+import Profile from '../models/Profile.js';
 
 // @desc Get comprehensive analytics for a freelancer dashboard
 // @route GET /api/freelancer-analytics
 // @access Private (Freelancer)
-exports.getFreelancerAnalytics = async (req, res) => {
+export const getFreelancerAnalytics = async (req, res) => {
   try {
     const userId = req.user._id;
 

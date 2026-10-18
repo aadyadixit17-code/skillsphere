@@ -1,11 +1,12 @@
-const Stripe = require('stripe');
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_dummy');
-const Payment = require('../models/Payment');
+import Stripe from 'stripe';
+import Payment from '../models/Payment.js';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_dummy');
 
 // @desc Create payment intent for Escrow/Milestone deposit
 // @route POST /api/payments/create-intent
 // @access Private (Client)
-exports.createPaymentIntent = async (req, res) => {
+export const createPaymentIntent = async (req, res) => {
   try {
     const { amount, freelancerId, gigId, milestoneTitle } = req.body;
 
@@ -38,7 +39,7 @@ exports.createPaymentIntent = async (req, res) => {
 // @desc Release Escrow funds to Freelancer (Automatic Payout simulation)
 // @route PUT /api/payments/release/:id
 // @access Private (Client or Admin)
-exports.releaseEscrow = async (req, res) => {
+export const releaseEscrow = async (req, res) => {
   try {
     const payment = await Payment.findById(req.params.id);
     if (!payment) return res.status(404).json({ message: 'Payment record not found' });
@@ -59,7 +60,7 @@ exports.releaseEscrow = async (req, res) => {
 // @desc Refund management
 // @route POST /api/payments/refund/:id
 // @access Private (Client or Admin)
-exports.refundPayment = async (req, res) => {
+export const refundPayment = async (req, res) => {
   try {
     const payment = await Payment.findById(req.params.id);
     if (!payment) return res.status(404).json({ message: 'Payment record not found' });
@@ -81,7 +82,7 @@ exports.refundPayment = async (req, res) => {
 // @desc Get transaction history for user
 // @route GET /api/payments/history
 // @access Private
-exports.getTransactionHistory = async (req, res) => {
+export const getTransactionHistory = async (req, res) => {
   try {
     const query = req.user.role === 'Client' ? { client: req.user._id } : { freelancer: req.user._id };
     const transactions = await Payment.find(query).populate('gig', 'title').sort({ createdAt: -1 });

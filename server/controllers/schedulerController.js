@@ -1,9 +1,9 @@
-const Schedule = require('../models/Schedule');
+import Schedule from '../models/Schedule.js';
 
 // @desc Add or update availability slots for freelancer
 // @route POST /api/scheduler/slots
 // @access Private (Freelancer)
-exports.setAvailabilitySlots = async (req, res) => {
+export const setAvailabilitySlots = async (req, res) => {
   try {
     const { slots } = req.body; // Array of { date, startTime, endTime }
 
@@ -24,7 +24,7 @@ exports.setAvailabilitySlots = async (req, res) => {
 // @desc Get availability slots for a freelancer (Public / Client view)
 // @route GET /api/scheduler/:freelancerId
 // @access Public
-exports.getFreelancerAvailability = async (req, res) => {
+export const getFreelancerAvailability = async (req, res) => {
   try {
     const schedule = await Schedule.findOne({ freelancer: req.params.freelancerId });
     if (!schedule) return res.json({ availableSlots: [], bookings: [] });
@@ -37,7 +37,7 @@ exports.getFreelancerAvailability = async (req, res) => {
 // @desc Book an available slot (Client Booking System with Auto-Scheduling check)
 // @route POST /api/scheduler/book
 // @access Private (Client)
-exports.bookSlot = async (req, res) => {
+export const bookSlot = async (req, res) => {
   try {
     const { freelancerId, slotId, date, startTime, endTime } = req.body;
 

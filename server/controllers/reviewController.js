@@ -1,10 +1,10 @@
-const Review = require('../models/Review');
-const Payment = require('../models/Payment');
+import Review from '../models/Review.js';
+import Payment from '../models/Payment.js';
 
 // @desc Submit a verified review with basic fraud detection
 // @route POST /api/reviews
 // @access Private (Client Only)
-exports.createReview = async (req, res) => {
+export const createReview = async (req, res) => {
   try {
     const { gigId, paymentId, recipientId, rating, comment } = req.body;
 
@@ -45,7 +45,7 @@ exports.createReview = async (req, res) => {
 // @desc Get review analytics and weighted reputation score for a user
 // @route GET /api/reviews/analytics/:userId
 // @access Public
-exports.getReviewAnalytics = async (req, res) => {
+export const getReviewAnalytics = async (req, res) => {
   try {
     const reviews = await Review.find({ recipient: req.params.userId, isFlaggedAsFake: false });
 

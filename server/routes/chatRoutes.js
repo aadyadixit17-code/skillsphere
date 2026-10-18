@@ -1,10 +1,9 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { getChatHistory, markAsRead } = require('../controllers/chatController');
-const { protect } = require('../middleware/authMiddleware');
+import { getChatHistory, markAsRead } from '../controllers/chatController.js';
+import { protect } from '../middleware/authMiddleware.js';
 
 router.get('/:userId', protect, getChatHistory);
 router.put('/read/:senderId', protect, markAsRead);
 
-module.exports = router;
 export default router;

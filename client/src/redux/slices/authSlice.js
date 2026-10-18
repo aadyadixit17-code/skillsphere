@@ -47,7 +47,7 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
 
 // Logout user
 export const logout = createAsyncThunk('auth/logout', async () => {
-  await authService.logout();
+  authService.logout();
 });
 
 export const authSlice = createSlice({
@@ -66,10 +66,10 @@ export const authSlice = createSlice({
       .addCase(register.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(register.fulfilled, (state, action) => {
+      .addCase(register.fulfilled, (state) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload;
+        // Do not set state.user here so register doesn't log the user in automatically[cite: 12]
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;

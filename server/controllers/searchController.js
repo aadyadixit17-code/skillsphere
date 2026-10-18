@@ -1,12 +1,12 @@
-const Gig = require('../models/Gig');
-const User = require('../models/User');
-const Profile = require('../models/Profile');
-const Review = require('../models/Review');
+import Gig from '../models/Gig.js';
+import User from '../models/User.js';
+import Profile from '../models/Profile.js';
+import Review from '../models/Review.js';
 
 // @desc Advanced search for gigs with filters
 // @route GET /api/search/gigs
 // @access Public
-exports.searchGigs = async (req, res) => {
+export const searchGigs = async (req, res) => {
   try {
     const { keyword, location, skills, minBudget, maxBudget } = req.query;
     let query = { status: 'Open' };
@@ -47,7 +47,7 @@ exports.searchGigs = async (req, res) => {
 // @desc Advanced search for freelancers with filters (Skills, Location, Rating, Experience)
 // @route GET /api/search/freelancers
 // @access Public
-exports.searchFreelancers = async (req, res) => {
+export const searchFreelancers = async (req, res) => {
   try {
     const { skill, location, minRate, maxRate, minRating } = req.query;
     

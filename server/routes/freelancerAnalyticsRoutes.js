@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { getFreelancerAnalytics } = require('../controllers/freelancerAnalyticsController');
-const { protect, authorize } = require('../middleware/authMiddleware');
+import { getFreelancerAnalytics } from '../controllers/freelancerAnalyticsController.js';
+import { protect, authorize } from '../middleware/authMiddleware.js';
 
 router.get('/', protect, authorize('Freelancer'), getFreelancerAnalytics);
 

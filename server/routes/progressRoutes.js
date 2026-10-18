@@ -1,11 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {
-  createTracker,
-  getTrackerByGig,
-  updateProgress
-} = require('../controllers/progressController');
-const { protect, authorize } = require('../middleware/authMiddleware');
+import { createTracker, getTrackerByGig, updateProgress } from '../controllers/progressController.js';
+import { protect, authorize } from '../middleware/authMiddleware.js';
 
 router.post('/', protect, createTracker);
 router.get('/:gigId', protect, getTrackerByGig);

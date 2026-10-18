@@ -9,17 +9,18 @@ function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
+  const { isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (isError) {
       alert(message);
     }
-    if (isSuccess || user) {
-      navigate('/dashboard');
+    if (isSuccess) {
+      alert('Registered successfully! Please sign in.');
+      navigate('/login');
     }
     dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+  }, [isError, isSuccess, message, navigate, dispatch]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));

@@ -1,11 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {
-  setAvailabilitySlots,
-  getFreelancerAvailability,
-  bookSlot
-} = require('../controllers/schedulerController');
-const { protect, authorize } = require('../middleware/authMiddleware');
+import { setAvailabilitySlots, getFreelancerAvailability, bookSlot } from '../controllers/schedulerController.js';
+import { protect, authorize } from '../middleware/authMiddleware.js';
 
 router.post('/slots', protect, authorize('Freelancer'), setAvailabilitySlots);
 router.get('/:freelancerId', getFreelancerAvailability);

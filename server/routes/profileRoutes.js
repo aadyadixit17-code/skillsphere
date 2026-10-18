@@ -1,14 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {
-  getMyProfile,
-  getProfileByUserId,
-  updateProfile,
-  uploadResume,
-  updateVerificationBadge
-} = require('../controllers/freelancerProfileController');
-const { protect, authorize } = require('../middleware/authMiddleware');
-const upload = require('../middleware/uploadMiddleware');
+import { getMyProfile, getProfileByUserId, updateProfile, uploadResume, updateVerificationBadge } from '../controllers/profileController.js';
+import { protect, authorize } from '../middleware/authMiddleware.js';
+import upload from '../middleware/uploadMiddleware.js';
 
 router.get('/me', protect, getMyProfile);
 router.get('/user/:userId', getProfileByUserId);

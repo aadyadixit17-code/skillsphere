@@ -1,10 +1,10 @@
-const Proposal = require('../models/Proposal');
-const Gig = require('../models/Gig');
+import Proposal from '../models/Proposal.js';
+import Gig from '../models/Gig.js';
 
 // @desc Submit a proposal for a gig
 // @route POST /api/proposals/:gigId
 // @access Private (Freelancer Only)
-exports.submitProposal = async (req, res) => {
+export const submitProposal = async (req, res) => {
   try {
     const { description, bidAmount, estimatedTime } = req.body;
     const gig = await Gig.findById(req.params.gigId);
@@ -38,7 +38,7 @@ exports.submitProposal = async (req, res) => {
 // @desc Get proposals for a specific gig (Client view) or freelancer's sent proposals
 // @route GET /api/proposals/gig/:gigId or /api/proposals/me
 // @access Private
-exports.getProposalsForGig = async (req, res) => {
+export const getProposalsForGig = async (req, res) => {
   try {
     const proposals = await Proposal.find({ gig: req.params.gigId }).populate('freelancer', 'name email role');
     res.json(proposals);
@@ -47,7 +47,7 @@ exports.getProposalsForGig = async (req, res) => {
   }
 };
 
-exports.getMyProposals = async (req, res) => {
+export const getMyProposals = async (req, res) => {
   try {
     const proposals = await Proposal.find({ freelancer: req.user._id }).populate('gig', 'title budget');
     res.json(proposals);
@@ -59,7 +59,7 @@ exports.getMyProposals = async (req, res) => {
 // @desc Client manages proposal (Accept, Reject, Negotiate)
 // @route PUT /api/proposals/:id/status
 // @access Private (Client Only)
-exports.updateProposalStatus = async (req, res) => {
+export const updateProposalStatus = async (req, res) => {
   try {
     const { status, counterAmount, counterMessage } = req.body; 
     // status can be 'Accepted', 'Rejected', 'Negotiating'

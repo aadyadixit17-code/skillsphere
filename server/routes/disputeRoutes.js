@@ -1,11 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {
-  createDispute,
-  getAllDisputes,
-  resolveDispute
-} = require('../controllers/disputeController');
-const { protect, authorize } = require('../middleware/authMiddleware');
+import { createDispute, getAllDisputes, resolveDispute } from '../controllers/disputeController.js';
+import { protect, authorize } from '../middleware/authMiddleware.js';
 
 router.post('/', protect, createDispute);
 router.get('/', protect, authorize('Admin'), getAllDisputes);
