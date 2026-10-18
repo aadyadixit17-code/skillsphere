@@ -33,6 +33,14 @@ import freelancerAnalyticsRoutes from './routes/freelancerAnalyticsRoutes.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Allowed origin for CORS / Socket.IO.
+// In a single-service deployment the frontend and API share one origin,
+// so this mostly matters for local development or a split deployment.
+// Set CLIENT_URL (e.g. https://your-app.onrender.com) to restrict it.
+const corsOrigin = process.env.CLIENT_URL || '*';
+
 // Connect to Database
 connectDB();
 
@@ -40,21 +48,28 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT']
-  }
+    origin: corsOrigin,
+    methods: ['GET', 'POST', 'PUT'],
+  },
 });
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: corsOrigin }));
 app.use(passport.initialize());
 
-// Ensure 'uploads' folder exists for resumes/portfolio files
-if (!fs.existsSync('./uploads')) {
-  fs.mkdirSync('./uploads');
+// Ensure 'uploads' folder exists (always relative to this file, not the working directory)
+// Note: on Render's free tier the disk is temporary, so uploaded files are lost on redeploy/restart.
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
 }
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(uploadsDir));
+
+// Health check (handy for Render)
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
 
 // API Routes
 app.use('/api/auth', authRoutes);
@@ -72,17 +87,23 @@ app.use('/api/disputes', disputeRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/freelancer-analytics', freelancerAnalyticsRoutes);
 
-// Serve frontend in production
-if (process.env.NODE_ENV === 'production') {
-  const buildPath = path.join(__dirname, '../client/build'); // Use 'dist' instead of 'build' if using Vite
+// Unknown API routes return JSON 404 (instead of falling through to the React app)
+app.use('/api', (req, res) => {
+  res.status(404).json({ message: 'API route not found' });
+});
+
+if (isProduction) {
+  // Serve the built React frontend
+  // Use 'dist' instead of 'build' if the client uses Vite
+  const buildPath = path.join(__dirname, '../client/build');
   app.use(express.static(buildPath));
   app.use((req, res) => res.sendFile(path.join(buildPath, 'index.html')));
+} else {
+  // Root endpoint for local development
+  app.get('/', (req, res) => {
+    res.send('SkillSphere API is running...');
+  });
 }
-
-// Root endpoint (only active in development or if production block doesn't override)
-app.get('/', (req, res) => {
-  res.send('SkillSphere API is running...');
-});
 
 // Socket.IO Real-Time Chat & Collaboration
 io.on('connection', (socket) => {
@@ -120,8 +141,15 @@ io.on('connection', (socket) => {
   // Message Read Receipts
   socket.on('mark_read', async (data) => {
     const { senderId, recipientId } = data;
-    await Message.updateMany({ sender: senderId, recipient: recipientId, isRead: false }, { $set: { isRead: true } });
-    io.to(senderId).emit('messages_read', { readerId: recipientId });
+    try {
+      await Message.updateMany(
+        { sender: senderId, recipient: recipientId, isRead: false },
+        { $set: { isRead: true } }
+      );
+      io.to(senderId).emit('messages_read', { readerId: recipientId });
+    } catch (error) {
+      console.error('Mark read error:', error);
+    }
   });
 
   socket.on('disconnect', () => {
