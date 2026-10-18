@@ -59,15 +59,19 @@ cd skillsphere
 Create a .env file inside the server/ directory and populate your database URI, JWT secret, and API keys.
 ```
 3.**Run the Application**
-```bash
+
 Start Backend Server:
+```bash
 Bash
 cd server
 npm install
 npm start
 ```
+
+Start Frontend Client:
 ```bash
-Start Frontend Client:Bashcd ../client
+Bash
+cd ../client
 npm install
 npm run dev
 ```
