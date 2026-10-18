@@ -58,7 +58,7 @@ cd skillsphere
 ```bash
 Create a .env file inside the server/ directory and populate your database URI, JWT secret, and API keys.
 ```
-3.** Run the Application**
+3.**Run the Application**
 ```bash
 Start Backend Server:
 Bash
